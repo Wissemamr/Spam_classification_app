@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Classifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4a90e2;
+        }
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #357abd;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .result p {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .spam {
+            color: red;
+            font-weight: bold;
+        }
+        .not-spam {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Spam Classifier Input</h1>
+        <form action="/predict" method="post">
+            <label for="message">Enter your message:</label>
+            <textarea id="message" name="message" rows="4" placeholder="Type your message here..."></textarea>
+            <button type="submit">Classify</button>
+        </form>
+
+        {% if result %}
+            <div class="result">
+                <p><span class="bold">Message:</span> {{ result.message }}</p>
+                <p><span class="bold">Prediction:</span> 
+                    <span class="{{ 'spam' if result.predicted_label == 'Spam' else 'not-spam' }}">
+                        {{ result.predicted_label }}
+                    </span>
+                </p>
+                <p><span class="bold">Spam Probability:</span> {{ '%.2f' | format(result.spam_probability * 100) }}%</p>
+                <p><span class="bold">Ham Probability:</span> {{ '%.2f' | format(result.ham_probability * 100) }}%</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
